@@ -29,7 +29,6 @@ class PrimaryEditText: AppCompatEditText, View.OnTouchListener {
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        hint = "Input"
         setHintTextColor(ContextCompat.getColor(context, R.color.text_secondary))
         textAlignment = View.TEXT_ALIGNMENT_VIEW_START
     }
