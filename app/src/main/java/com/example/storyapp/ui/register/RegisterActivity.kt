@@ -87,7 +87,13 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
 
-
+            isAnimate.observe(this@RegisterActivity) {
+                if (it.hasBeenHandled)
+                    showView()
+                it.getContentIfNotHandled()?.let {
+                    playAnimation()
+                }
+            }
         }
     }
 
@@ -209,36 +215,52 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun playAnimation() {
         val greeting = ObjectAnimator.ofFloat(binding.tvGreeting, View.ALPHA, 1f).setDuration(500)
-        val tvName = ObjectAnimator.ofFloat(binding.tvName, View.ALPHA, 1f).setDuration(500)
-        val tilName = ObjectAnimator.ofFloat(binding.tilName, View.ALPHA, 1f).setDuration(500)
-        val tvEmail = ObjectAnimator.ofFloat(binding.tvEmail, View.ALPHA, 1f).setDuration(500)
-        val tilEmail = ObjectAnimator.ofFloat(binding.tilEmail, View.ALPHA, 1f).setDuration(500)
-        val tvPassword = ObjectAnimator.ofFloat(binding.tvPassword, View.ALPHA, 1f).setDuration(500)
-        val tilPassword =
+        val name = ObjectAnimator.ofFloat(binding.tvName, View.ALPHA, 1f).setDuration(500)
+        val nameInput = ObjectAnimator.ofFloat(binding.tilName, View.ALPHA, 1f).setDuration(500)
+        val email = ObjectAnimator.ofFloat(binding.tvEmail, View.ALPHA, 1f).setDuration(500)
+        val emailInput = ObjectAnimator.ofFloat(binding.tilEmail, View.ALPHA, 1f).setDuration(500)
+        val password = ObjectAnimator.ofFloat(binding.tvPassword, View.ALPHA, 1f).setDuration(500)
+        val passwordInput =
             ObjectAnimator.ofFloat(binding.tilPassword, View.ALPHA, 1f).setDuration(500)
-        val tvConfirmPassword =
+        val confirmPassword =
             ObjectAnimator.ofFloat(binding.tvConfirmPassword, View.ALPHA, 1f).setDuration(500)
-        val tilConfirmPassword =
+        val confirmPasswordInput =
             ObjectAnimator.ofFloat(binding.tilConfirmPassword, View.ALPHA, 1f).setDuration(500)
-        val btnRegister =
+        val register =
             ObjectAnimator.ofFloat(binding.btnRegister, View.ALPHA, 1f).setDuration(500)
-        val llLogin = ObjectAnimator.ofFloat(binding.llLogin, View.ALPHA, 1f).setDuration(500)
+        val login = ObjectAnimator.ofFloat(binding.llLogin, View.ALPHA, 1f).setDuration(500)
 
         AnimatorSet().apply {
             playSequentially(
                 greeting,
-                tvName,
-                tilName,
-                tvEmail,
-                tilEmail,
-                tvPassword,
-                tilPassword,
-                tvConfirmPassword,
-                tilConfirmPassword,
-                btnRegister,
-                llLogin
+                name,
+                nameInput,
+                email,
+                emailInput,
+                password,
+                passwordInput,
+                confirmPassword,
+                confirmPasswordInput,
+                register,
+                login
             )
         }.start()
+    }
+
+    private fun showView() {
+        binding.apply {
+            tvGreeting.alpha = 1f
+            tvName.alpha = 1f
+            tilName.alpha = 1f
+            tvEmail.alpha = 1f
+            tilEmail.alpha = 1f
+            tvPassword.alpha = 1f
+            tilPassword.alpha = 1f
+            tvConfirmPassword.alpha = 1f
+            tilConfirmPassword.alpha = 1f
+            btnRegister.alpha = 1f
+            llLogin.alpha = 1f
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {

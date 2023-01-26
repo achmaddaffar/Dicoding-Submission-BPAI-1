@@ -22,6 +22,13 @@ class RegisterViewModel(private val application: Application) :
     private val mSnackBarText = MutableLiveData<Event<String>>()
     val snackBarText: LiveData<Event<String>> = mSnackBarText
 
+    private val mIsAnimate = MutableLiveData<Event<Boolean>>()
+    val isAnimate: LiveData<Event<Boolean>> = mIsAnimate
+
+    init {
+        mIsAnimate.value = Event(false)
+    }
+
     fun registerUser(name: String, email: String, password: String) {
         showLoading(true)
         val client = ApiConfig.getApiService().register(name, email, password)
@@ -38,9 +45,6 @@ class RegisterViewModel(private val application: Application) :
                         if (isError) {
                             mSnackBarText.value =
                                 Event(application.getString(R.string.email_is_already_taken))
-                        } else {
-                            mSnackBarText.value =
-                                Event(application.getString(R.string.user_created_successfully))
                         }
                     }
                 } else {
@@ -52,7 +56,7 @@ class RegisterViewModel(private val application: Application) :
 
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
                 showLoading(false)
-                mSnackBarText.value = Event(t.message.toString())
+                mSnackBarText.value = Event(application.getString(R.string.failed_to_connect))
                 Log.e(TAG, "onFailure: ${t.message}")
             }
         })

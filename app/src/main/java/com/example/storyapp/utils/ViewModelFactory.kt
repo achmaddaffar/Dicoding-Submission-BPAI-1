@@ -18,7 +18,7 @@ class ViewModelFactory(private val pref: UserPreference, private val application
                 SplashScreenViewModel(pref) as T
             }
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
-                LoginViewModel(pref) as T
+                LoginViewModel(pref, application) as T
             }
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
                 RegisterViewModel(application) as T

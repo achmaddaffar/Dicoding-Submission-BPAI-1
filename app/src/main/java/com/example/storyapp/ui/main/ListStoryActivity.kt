@@ -28,8 +28,6 @@ class ListStoryActivity : AppCompatActivity() {
             ViewModelFactory(UserPreference.getInstance(dataStore), application)
         )[ListStoryViewModel::class.java]
 
-        viewModel.getUser().observe(this) { user ->
-            this.user = user
-        }
+
     }
 }

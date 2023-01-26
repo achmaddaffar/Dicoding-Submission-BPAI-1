@@ -25,4 +25,5 @@
     <string name="registered">Registered</string>
     <string name="account_created_successfully">Your account has been created successfully</string>
     <string name="sign_in">Sign in</string>
+    <string name="failed_to_connect">Failed to connect</string>
 </resources>

@@ -7,7 +7,5 @@ import com.example.storyapp.data.auth.UserModel
 import com.example.storyapp.data.auth.UserPreference
 
 class ListStoryViewModel(private val pref: UserPreference) : ViewModel() {
-    fun getUser(): LiveData<UserModel> {
-        return pref.getUser().asLiveData()
-    }
+
 }
