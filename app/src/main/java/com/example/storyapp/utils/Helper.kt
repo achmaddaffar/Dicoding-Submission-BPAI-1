@@ -11,5 +11,8 @@ class Helper {
         fun String.isValidPassword() = !isNullOrEmpty() && this.count() >= 8
         fun CharSequence?.isValidEmail() = !isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
         val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
+        const val EXTRA_USER = "user"
+        const val BASE_URL = "https://story-api.dicoding.dev/v1/"
     }
 }

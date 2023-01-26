@@ -20,5 +20,5 @@
     <color name="text_secondary">#757575</color>
     <color name="divider">#BDBDBD</color>
     <color name="red_light">#F6C9C6</color>
-    <color name="button_text_color">#000000</color>
+    <color name="button_text_color">#FFFFFFFF</color>
 </resources>

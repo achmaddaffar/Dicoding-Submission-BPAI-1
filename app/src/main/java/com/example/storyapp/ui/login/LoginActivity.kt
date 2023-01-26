@@ -2,6 +2,9 @@ package com.example.storyapp.ui.login
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.app.Dialog
+import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,6 +15,8 @@ import com.example.storyapp.R
 import com.example.storyapp.data.auth.UserModel
 import com.example.storyapp.data.auth.UserPreference
 import com.example.storyapp.databinding.ActivityLoginBinding
+import com.example.storyapp.ui.main.ListStoryActivity
+import com.example.storyapp.ui.register.RegisterActivity
 import com.example.storyapp.utils.Helper.Companion.dataStore
 import com.example.storyapp.utils.Helper.Companion.isValidEmail
 import com.example.storyapp.utils.Helper.Companion.isValidPassword
@@ -21,6 +26,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var viewModel: LoginViewModel
     private lateinit var user: UserModel
+    private lateinit var dialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
     private fun setupViewModel() {
         viewModel = ViewModelProvider(
             this,
-            ViewModelFactory(UserPreference.getInstance(dataStore))
+            ViewModelFactory(UserPreference.getInstance(dataStore), application)
         )[LoginViewModel::class.java]
 
         viewModel.getUser().observe(this) { user ->
@@ -56,6 +62,12 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
+        dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_loading)
+        dialog.setCancelable(false)
+        if (dialog.window != null)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(0))
+
         binding.apply {
             edLoginEmail.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
@@ -65,6 +77,7 @@ class LoginActivity : AppCompatActivity() {
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     setButtonEnable()
+                    isLoginInvalid(false)
                 }
 
                 override fun afterTextChanged(s: Editable?) {
@@ -84,6 +97,7 @@ class LoginActivity : AppCompatActivity() {
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     setButtonEnable()
+                    isLoginInvalid(false)
                 }
 
                 override fun afterTextChanged(s: Editable?) {
@@ -97,7 +111,26 @@ class LoginActivity : AppCompatActivity() {
             })
 
             btnLogin.setOnClickListener {
-                viewModel.login()
+                binding.let {
+                    val email = it.edLoginEmail.text.toString()
+                    val password = it.edLoginPassword.text.toString()
+                    if (email != user.email || password != user.password) {
+                        isLoginInvalid(true)
+                    } else {
+//                        viewModel.login()
+                        val intent = Intent(this@LoginActivity, ListStoryActivity::class.java)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+            }
+
+            tvRegister.setOnClickListener {
+                val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
             }
         }
     }
@@ -124,5 +157,9 @@ class LoginActivity : AppCompatActivity() {
             )
             start()
         }
+    }
+
+    private fun isLoginInvalid(isError: Boolean) {
+        binding.cvLoginInvalid.visibility = if (isError) View.VISIBLE else View.GONE
     }
 }

@@ -2,16 +2,18 @@ package com.example.storyapp.ui.register
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.R
-import com.example.storyapp.data.auth.UserModel
 import com.example.storyapp.data.auth.UserPreference
 import com.example.storyapp.databinding.ActivityRegisterBinding
 import com.example.storyapp.ui.login.LoginActivity
@@ -19,10 +21,12 @@ import com.example.storyapp.utils.Helper.Companion.dataStore
 import com.example.storyapp.utils.Helper.Companion.isValidEmail
 import com.example.storyapp.utils.Helper.Companion.isValidPassword
 import com.example.storyapp.utils.ViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var viewModel: RegisterViewModel
+    private lateinit var dialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,14 +37,58 @@ class RegisterActivity : AppCompatActivity() {
         setupViewModel()
         setButtonEnable()
         setupAction()
-        playAnimation()
     }
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(
             this,
-            ViewModelFactory(UserPreference.getInstance(dataStore))
+            ViewModelFactory(UserPreference.getInstance(dataStore), application)
         )[RegisterViewModel::class.java]
+
+        viewModel.apply {
+            isLoading.observe(this@RegisterActivity) { isLoading ->
+                showLoading(isLoading)
+            }
+
+            snackBarText.observe(this@RegisterActivity) {
+                it.getContentIfNotHandled()?.let { snackBarText ->
+                    if (snackBarText == getString(R.string.user_created_successfully)) {
+                        AlertDialog.Builder(this@RegisterActivity).apply {
+                            setTitle(getString(R.string.registered))
+                            setMessage(getString(R.string.account_created_successfully))
+                            setPositiveButton(getString(R.string.sign_in)) { _, _ ->
+                                val intent =
+                                    Intent(this@RegisterActivity, LoginActivity::class.java)
+                                startActivity(intent)
+                            }
+                            create()
+                            show()
+                        }
+                    } else {
+                        Snackbar.make(
+                            window.decorView.rootView,
+                            snackBarText,
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .setBackgroundTint(
+                                ContextCompat.getColor(
+                                    this@RegisterActivity,
+                                    R.color.red_light
+                                )
+                            )
+                            .setTextColor(
+                                ContextCompat.getColor(
+                                    this@RegisterActivity,
+                                    R.color.button_text_color
+                                )
+                            )
+                            .show()
+                    }
+                }
+            }
+
+
+        }
     }
 
     private fun setButtonEnable() {
@@ -58,6 +106,12 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
+        dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_loading)
+        dialog.setCancelable(false)
+        if (dialog.window != null)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(0))
+
         binding.apply {
             edRegisterName.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
@@ -141,22 +195,13 @@ class RegisterActivity : AppCompatActivity() {
                     val name = it.edRegisterName.text.toString()
                     val email = it.edRegisterEmail.text.toString()
                     val password = it.edRegisterPassword.text.toString()
-                    viewModel.saveUser(UserModel(name, email, password, true))
-                }
-                AlertDialog.Builder(this@RegisterActivity).apply {
-                    setTitle("Registered")
-                    setMessage("Your account has been created successfully")
-                    setPositiveButton("Sign in") { _, _ ->
-                        val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
-                        startActivity(intent)
-                    }
-                    create()
-                    show()
+                    viewModel.registerUser(name, email, password)
                 }
             }
 
             tvLogin.setOnClickListener {
                 val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
             }
         }
@@ -193,7 +238,10 @@ class RegisterActivity : AppCompatActivity() {
                 btnRegister,
                 llLogin
             )
-            start()
-        }
+        }.start()
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) dialog.show() else dialog.cancel()
     }
 }

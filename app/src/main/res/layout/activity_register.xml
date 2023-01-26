@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="32dp"
     android:fillViewport="true"
+    android:paddingHorizontal="32dp"
     tools:context=".ui.register.RegisterActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginVertical="32dp">
 
         <TextView
             android:id="@+id/tv_greeting"
@@ -18,10 +19,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
+            android:alpha="0"
             android:text="@string/sign_up_and_share_your_story"
             android:textSize="36sp"
             android:textStyle="bold"
-            android:alpha="0"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,8 +33,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="42dp"
-            android:text="@string/name"
             android:alpha="0"
+            android:text="@string/name"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_greeting" />
@@ -42,8 +43,8 @@
             android:id="@+id/til_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:boxBackgroundColor="@color/white"
             android:alpha="0"
+            app:boxBackgroundColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_name"
             app:startIconDrawable="@drawable/ic_outline_account_circle_24">
@@ -58,10 +59,10 @@
         <TextView
             android:id="@+id/tv_email"
             style="@style/Text_Main"
-            android:alpha="0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:alpha="0"
             android:text="@string/email"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -88,10 +89,10 @@
         <TextView
             android:id="@+id/tv_password"
             style="@style/Text_Main"
-            android:alpha="0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:alpha="0"
             android:text="@string/password"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -101,8 +102,8 @@
             android:id="@+id/til_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="start"
             android:alpha="0"
+            android:gravity="start"
             app:boxBackgroundColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_password"
@@ -120,10 +121,10 @@
         <TextView
             android:id="@+id/tv_confirm_password"
             style="@style/Text_Main"
-            android:alpha="0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:alpha="0"
             android:text="@string/confirm_password"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -133,8 +134,8 @@
             android:id="@+id/til_confirm_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:alpha="0"
+            android:gravity="center_vertical"
             app:boxBackgroundColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_confirm_password"
@@ -154,17 +155,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginVertical="24dp"
             android:alpha="0"
             android:text="@string/register"
             android:textColor="@color/black"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintVertical_bias="1"
             app:layout_constraintBottom_toTopOf="@id/ll_login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/til_confirm_password"/>
+            app:layout_constraintTop_toBottomOf="@id/til_confirm_password"
+            app:layout_constraintVertical_bias="1" />
 
         <LinearLayout
             android:id="@+id/ll_login"
