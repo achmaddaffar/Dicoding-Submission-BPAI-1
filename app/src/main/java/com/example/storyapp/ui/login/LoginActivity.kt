@@ -13,9 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.R
-import com.example.storyapp.data.auth.UserModel
-import com.example.storyapp.data.auth.UserPreference
+import com.example.storyapp.data.local.UserPreference
 import com.example.storyapp.databinding.ActivityLoginBinding
+import com.example.storyapp.ui.main.ListStoryActivity
 import com.example.storyapp.ui.register.RegisterActivity
 import com.example.storyapp.utils.Helper.Companion.dataStore
 import com.example.storyapp.utils.Helper.Companion.isValidEmail
@@ -26,7 +26,6 @@ import com.google.android.material.snackbar.Snackbar
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var viewModel: LoginViewModel
-    private lateinit var user: UserModel
     private lateinit var dialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,6 +83,14 @@ class LoginActivity : AppCompatActivity() {
 
             loginError.observe(this@LoginActivity) { loginError ->
                 showLoginInvalid(loginError)
+
+                if(!loginError) {
+                    val intent = Intent(this@LoginActivity, ListStoryActivity::class.java)
+                    intent.flags =
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                    finish()
+                }
             }
         }
     }
@@ -167,19 +174,11 @@ class LoginActivity : AppCompatActivity() {
             })
 
             btnLogin.setOnClickListener {
-//                binding.let {
-//                    val email = it.edLoginEmail.text.toString()
-//                    val password = it.edLoginPassword.text.toString()
-//                    if (email != user.email || password != user.password) {
-//                        isLoginInvalid(true)
-//                    } else {
-//                        val intent = Intent(this@LoginActivity, ListStoryActivity::class.java)
-//                        intent.flags =
-//                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-//                        startActivity(intent)
-//                        finish()
-//                    }
-//                }
+                binding.let {
+                    val email = it.edLoginEmail.text.toString()
+                    val password = it.edLoginPassword.text.toString()
+                    viewModel.login(email, password)
+                }
             }
 
             tvRegister.setOnClickListener {

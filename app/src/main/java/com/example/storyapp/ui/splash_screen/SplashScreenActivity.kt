@@ -14,8 +14,8 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.storyapp.data.auth.UserModel
-import com.example.storyapp.data.auth.UserPreference
+import com.example.storyapp.data.local.UserModel
+import com.example.storyapp.data.local.UserPreference
 import com.example.storyapp.databinding.ActivitySplashScreenBinding
 import com.example.storyapp.ui.login.LoginActivity
 import com.example.storyapp.ui.main.ListStoryActivity
@@ -61,7 +61,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
         viewModel.getUser().observe(this) { user ->
             this.user = user
-            this.isLogin = user.isLogin
+            this.isLogin = user.token.isNotEmpty()
         }
     }
 

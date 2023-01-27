@@ -5,12 +5,15 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.storyapp.R
-import com.example.storyapp.data.auth.UserPreference
+import com.example.storyapp.data.local.UserModel
+import com.example.storyapp.data.local.UserPreference
 import com.example.storyapp.data.remote.response.LoginResponse
 import com.example.storyapp.data.remote.response.LoginResult
 import com.example.storyapp.data.remote.retrofit.ApiConfig
 import com.example.storyapp.utils.Event
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -51,12 +54,14 @@ class LoginViewModel(
                     if (responseBody != null) {
                         mLoginError.value = responseBody.error as Boolean
                         val loginResult = responseBody.loginResult as LoginResult
-                        val userId = loginResult.userId as String
                         val name = loginResult.name as String
                         val token = loginResult.token as String
-//                        pref.saveUser()
+                        viewModelScope.launch {
+                            pref.saveUser(UserModel(name, email, token))
+                        }
                     }
                 } else {
+                    mLoginError.value = true
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }

@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.R
-import com.example.storyapp.data.auth.UserPreference
+import com.example.storyapp.data.local.UserPreference
 import com.example.storyapp.databinding.ActivityRegisterBinding
 import com.example.storyapp.ui.login.LoginActivity
 import com.example.storyapp.utils.Helper.Companion.dataStore

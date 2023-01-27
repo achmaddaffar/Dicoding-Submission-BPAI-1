@@ -31,6 +31,7 @@ class PrimaryEditText: AppCompatEditText, View.OnTouchListener {
         super.onDraw(canvas)
         setHintTextColor(ContextCompat.getColor(context, R.color.text_secondary))
         textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+        maxLines = 1
     }
 
     private fun init() {

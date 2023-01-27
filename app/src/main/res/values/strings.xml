@@ -26,4 +26,14 @@
     <string name="account_created_successfully">Your account has been created successfully</string>
     <string name="sign_in">Sign in</string>
     <string name="failed_to_connect">Failed to connect</string>
+    <string name="are_you_sure">Are you sure you want to exit?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="post_story_button">Post Story Button</string>
+    <string name="settings">Settings</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="logout">Logout</string>
+    <string name="are_you_sure_logout">Are you sure you want to logout?</string>
 </resources>
