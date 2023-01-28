@@ -1,4 +1,4 @@
-package com.example.storyapp.ui.splash_screen
+package com.example.storyapp.ui.splash
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -10,4 +10,6 @@ class SplashScreenViewModel(private val pref : UserPreference): ViewModel() {
     fun getUser(): LiveData<UserModel> {
         return pref.getUser().asLiveData()
     }
+
+    fun getTheme() = pref.getThemeSetting().asLiveData()
 }

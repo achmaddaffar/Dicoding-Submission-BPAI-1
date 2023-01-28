@@ -20,7 +20,8 @@
         android:layout_margin="36dp"
         android:contentDescription="@string/post_story_button"
         android:src="@drawable/baseline_add_24"
-        app:fabCustomSize="75dp"
+        app:fabCustomSize="65dp"
+        app:backgroundTint="@color/fab_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="60dp" />

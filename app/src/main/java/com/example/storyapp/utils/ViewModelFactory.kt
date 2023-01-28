@@ -8,7 +8,7 @@ import com.example.storyapp.ui.login.LoginViewModel
 import com.example.storyapp.ui.main.ListStoryViewModel
 import com.example.storyapp.ui.register.RegisterViewModel
 import com.example.storyapp.ui.settings.SettingsViewModel
-import com.example.storyapp.ui.splash_screen.SplashScreenViewModel
+import com.example.storyapp.ui.splash.SplashScreenViewModel
 
 class ViewModelFactory(
     private val pref: UserPreference, private val application: Application

@@ -1,4 +1,4 @@
-package com.example.storyapp.ui.splash_screen
+package com.example.storyapp.ui.splash
 
 import android.animation.Animator
 import android.animation.Animator.AnimatorListener
@@ -13,6 +13,7 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.data.local.UserModel
 import com.example.storyapp.data.local.UserPreference
@@ -59,9 +60,18 @@ class SplashScreenActivity : AppCompatActivity() {
             this, ViewModelFactory(UserPreference.getInstance(dataStore), application)
         )[SplashScreenViewModel::class.java]
 
-        viewModel.getUser().observe(this) { user ->
-            this.user = user
-            this.isLogin = user.token.isNotEmpty()
+        viewModel.apply {
+            getUser().observe(this@SplashScreenActivity) { user ->
+                this@SplashScreenActivity.user = user
+                this@SplashScreenActivity.isLogin = user.token.isNotEmpty()
+            }
+
+            getTheme().observe(this@SplashScreenActivity) { isDarkModeActive ->
+                if (isDarkModeActive)
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                else
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
         }
     }
 

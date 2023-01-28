@@ -50,7 +50,7 @@
             app:layout_constraintTop_toBottomOf="@id/tv_email"
             app:startIconDrawable="@drawable/ic_outline_email_24">
 
-            <com.example.storyapp.ui.custom_view.PrimaryEditText
+            <com.example.storyapp.ui.custom.PrimaryEditText
                 android:id="@+id/ed_login_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -81,7 +81,7 @@
             app:passwordToggleEnabled="true"
             app:startIconDrawable="@drawable/ic_baseline_lock_24">
 
-            <com.example.storyapp.ui.custom_view.PasswordEditText
+            <com.example.storyapp.ui.custom.PasswordEditText
                 android:id="@+id/ed_login_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

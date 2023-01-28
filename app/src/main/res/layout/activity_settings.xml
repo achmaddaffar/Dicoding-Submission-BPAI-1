@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/switch_dark_mode"
+        android:id="@+id/switch_theme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/tv_dark_mode"
@@ -33,7 +33,7 @@
         android:layout_marginHorizontal="12dp"
         android:layout_marginBottom="36dp"
         android:text="@string/logout"
-        android:backgroundTint="@color/red_light"
+        android:backgroundTint="@color/red"
         android:textColor="@color/button_text_color"
         android:textSize="14sp"
         android:textStyle="bold"

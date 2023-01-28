@@ -1,4 +1,4 @@
-package com.example.storyapp.ui.custom_view
+package com.example.storyapp.ui.custom
 
 import android.content.Context
 import android.graphics.Canvas
@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
@@ -31,6 +30,8 @@ class PasswordEditText: AppCompatEditText {
         super.onDraw(canvas)
         setHintTextColor(ContextCompat.getColor(context, R.color.text_secondary))
         textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+        maxLines = 1
+        setBackgroundColor(0)
     }
 
     private fun init() {

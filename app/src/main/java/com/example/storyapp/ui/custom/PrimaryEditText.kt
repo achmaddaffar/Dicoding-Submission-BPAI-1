@@ -1,4 +1,4 @@
-package com.example.storyapp.ui.custom_view
+package com.example.storyapp.ui.custom
 
 import android.content.Context
 import android.graphics.Canvas
@@ -32,6 +32,7 @@ class PrimaryEditText: AppCompatEditText, View.OnTouchListener {
         setHintTextColor(ContextCompat.getColor(context, R.color.text_secondary))
         textAlignment = View.TEXT_ALIGNMENT_VIEW_START
         maxLines = 1
+        setBackgroundColor(0)
     }
 
     private fun init() {
