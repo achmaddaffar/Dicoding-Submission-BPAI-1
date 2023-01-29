@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.data.local.UserPreference
+import com.example.storyapp.ui.addStory.AddStoryViewModel
 import com.example.storyapp.ui.login.LoginViewModel
 import com.example.storyapp.ui.main.ListStoryViewModel
 import com.example.storyapp.ui.register.RegisterViewModel
@@ -31,6 +32,9 @@ class ViewModelFactory(
             }
             modelClass.isAssignableFrom(SettingsViewModel::class.java) -> {
                 SettingsViewModel(pref) as T
+            }
+            modelClass.isAssignableFrom(AddStoryViewModel::class.java) -> {
+                AddStoryViewModel(pref, application) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

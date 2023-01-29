@@ -39,4 +39,10 @@
     <string name="add_photo_image">Add photo image</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
+    <string name="unable_to_obtain_permission">Unable to obtain permission.</string>
+    <string name="upload">Upload</string>
+    <string name="choose_a_picture">Choose a Picture</string>
+    <string name="add_a_description">Add a description</string>
+    <string name="capture_button">Capture Button</string>
+    <string name="switch_camera_button">Switch Camera Button</string>
 </resources>
