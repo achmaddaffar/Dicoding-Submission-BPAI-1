@@ -70,7 +70,7 @@ class LoginActivity : AppCompatActivity() {
                         .setTextColor(
                             ContextCompat.getColor(
                                 this@LoginActivity,
-                                R.color.button_text_color
+                                R.color.black
                             )
                         )
                         .show()

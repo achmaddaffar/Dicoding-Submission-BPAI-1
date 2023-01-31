@@ -29,15 +29,14 @@ class Helper {
 
         val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
-        const val EXTRA_USER = "user"
         const val BASE_URL = "https://story-api.dicoding.dev/v1/"
         private const val FILENAME_FORMAT = "dd-MM-yyyy"
-        val timeStamp: String = SimpleDateFormat(
+        private val timeStamp: String = SimpleDateFormat(
             FILENAME_FORMAT,
             Locale.US
         ).format(System.currentTimeMillis())
 
-        fun createCustomTempFile(context: Context): File {
+        private fun createCustomTempFile(context: Context): File {
             val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
             return File.createTempFile(timeStamp, ".jpg", storageDir)
         }
@@ -69,6 +68,7 @@ class Helper {
                 )
             } else {
                 matrix.postRotate(-90f)
+                matrix.postScale(-1f, 1f, bitmap.width / 2f, bitmap.height / 2f)
                 Bitmap.createBitmap(
                     bitmap,
                     0,
@@ -115,5 +115,4 @@ class Helper {
             return file
         }
     }
-
 }

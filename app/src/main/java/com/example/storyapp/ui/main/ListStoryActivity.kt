@@ -15,6 +15,7 @@ import com.example.storyapp.R
 import com.example.storyapp.data.local.UserPreference
 import com.example.storyapp.data.remote.response.ListStoryItem
 import com.example.storyapp.databinding.ActivityListStoryBinding
+import com.example.storyapp.ui.addStory.AddStoryActivity
 import com.example.storyapp.ui.settings.SettingsActivity
 import com.example.storyapp.utils.Helper.Companion.dataStore
 import com.example.storyapp.utils.ViewModelFactory
@@ -87,7 +88,7 @@ class ListStoryActivity : AppCompatActivity() {
                         .setTextColor(
                             ContextCompat.getColor(
                                 this@ListStoryActivity,
-                                R.color.button_text_color
+                                R.color.black
                             )
                         )
                         .show()
@@ -120,6 +121,11 @@ class ListStoryActivity : AppCompatActivity() {
         binding.apply {
             rvStoryList.layoutManager = layoutManager
             rvStoryList.setHasFixedSize(true)
+
+            fabPost.setOnClickListener {
+                val intent = Intent(this@ListStoryActivity, AddStoryActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 

@@ -12,11 +12,16 @@ import com.example.storyapp.data.local.UserPreference
 import com.example.storyapp.data.remote.response.UploadStoryResponse
 import com.example.storyapp.data.remote.retrofit.ApiConfig
 import com.example.storyapp.utils.Event
+import com.example.storyapp.utils.Helper
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class AddStoryViewModel(
     private val pref: UserPreference,
@@ -30,17 +35,31 @@ class AddStoryViewModel(
     private val mSnackBarText = MutableLiveData<Event<String>>()
     val snackBarText: LiveData<Event<String>> = mSnackBarText
 
+    private val mTempFile = MutableLiveData<File>()
+    val tempFile: LiveData<File> = mTempFile
+
+    fun setFile(file: File) {
+        mTempFile.value = file
+    }
+
     fun getUser(): LiveData<UserModel> {
         return pref.getUser().asLiveData()
     }
 
-    fun uploadStory(
-        token: String,
-        imageMultipart: MultipartBody.Part,
-        description: RequestBody
-    ) {
+    fun uploadStory(token: String, desc: String) {
         showLoading(true)
-        val client = ApiConfig.getApiService().uploadStory(token, imageMultipart, description, null, null)
+
+        val file = Helper.reduceFileImage(mTempFile.value as File)
+        val description = desc.toRequestBody("text/plain".toMediaType())
+        val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+        val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
+            "photo",
+            file.name,
+            requestImageFile
+        )
+
+        val client =
+            ApiConfig.getApiService().uploadStory(token, imageMultipart, description, null, null)
         client.enqueue(object : Callback<UploadStoryResponse> {
             override fun onResponse(
                 call: Call<UploadStoryResponse>,

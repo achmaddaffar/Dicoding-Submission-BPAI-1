@@ -44,4 +44,6 @@
     <string name="add_a_description">Add a description</string>
     <string name="capture_button">Capture Button</string>
     <string name="switch_camera_button">Switch Camera Button</string>
+    <string name="failed_to_start_camera">Failed to start camera</string>
+    <string name="failed_to_take_photo">Failed to take photo</string>
 </resources>

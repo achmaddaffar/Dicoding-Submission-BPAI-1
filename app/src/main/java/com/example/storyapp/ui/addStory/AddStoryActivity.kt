@@ -7,26 +7,22 @@ import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.R
 import com.example.storyapp.data.local.UserPreference
 import com.example.storyapp.databinding.ActivityAddStoryBinding
 import com.example.storyapp.utils.Helper.Companion.dataStore
-import com.example.storyapp.utils.Helper.Companion.reduceFileImage
-import com.example.storyapp.utils.Helper.Companion.rotateBitmap
 import com.example.storyapp.utils.Helper.Companion.uriToFile
 import com.example.storyapp.utils.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 class AddStoryActivity : AppCompatActivity() {
@@ -43,15 +39,15 @@ class AddStoryActivity : AppCompatActivity() {
     ) {
         if (it.resultCode == CAMERA_X_RESULT) {
             val file = it.data?.getSerializableExtra("picture") as File
-            val isBackCamera = it.data?.getBooleanExtra("isBackCamera", true) as Boolean
+//            val isBackCamera = it.data?.getBooleanExtra("isBackCamera", true) as Boolean
 
             getFile = file
-            val result = rotateBitmap(
-                BitmapFactory.decodeFile(getFile?.path),
-                isBackCamera
-            )
+//            val result = rotateBitmap(
+//                BitmapFactory.decodeFile(getFile?.path),
+//                isBackCamera
+//            )
 
-            binding.ivPreviewImage.setImageBitmap(result)
+            viewModel.setFile(file)
         }
     }
 
@@ -62,7 +58,7 @@ class AddStoryActivity : AppCompatActivity() {
             val selectedImg: Uri = result.data?.data as Uri
             val file = uriToFile(selectedImg, this)
             getFile = file
-            binding.ivPreviewImage.setImageURI(selectedImg)
+            viewModel.setFile(file)
         }
     }
 
@@ -71,8 +67,22 @@ class AddStoryActivity : AppCompatActivity() {
         binding = ActivityAddStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        if (!allPermissionsGranted()) {
+            ActivityCompat.requestPermissions(
+                this,
+                REQUIRED_PERMISSIONS,
+                REQUEST_CODE_PERMISSIONS
+            )
+        }
+
         setupViewModel()
         setupAction()
+        setButtonEnable()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setButtonEnable()
     }
 
     override fun onRequestPermissionsResult(
@@ -100,12 +110,15 @@ class AddStoryActivity : AppCompatActivity() {
         )[AddStoryViewModel::class.java]
 
         viewModel.apply {
-            isLoading.observe(this@AddStoryActivity) {isLoading ->
+            isLoading.observe(this@AddStoryActivity) { isLoading ->
                 showLoading(isLoading)
             }
 
             snackBarText.observe(this@AddStoryActivity) {
                 it.getContentIfNotHandled()?.let { snackBarText ->
+                    if (snackBarText != getString(R.string.failed_to_connect))
+                        finish()
+
                     Snackbar.make(
                         window.decorView.rootView,
                         snackBarText,
@@ -120,15 +133,20 @@ class AddStoryActivity : AppCompatActivity() {
                         .setTextColor(
                             ContextCompat.getColor(
                                 this@AddStoryActivity,
-                                R.color.button_text_color
+                                R.color.black
                             )
                         )
                         .show()
                 }
             }
 
-            getUser().observe(this@AddStoryActivity) {user ->
+            getUser().observe(this@AddStoryActivity) { user ->
                 token = "Bearer ${user.token}"
+            }
+
+            tempFile.observe(this@AddStoryActivity) { file ->
+                val bitmap = BitmapFactory.decodeFile(file.path)
+                binding.ivPreviewImage.setImageBitmap(bitmap)
             }
         }
     }
@@ -141,26 +159,35 @@ class AddStoryActivity : AppCompatActivity() {
             dialog.window?.setBackgroundDrawable(ColorDrawable(0))
 
         binding.apply {
-            buttonAdd.setOnClickListener { uploadImage() }
+            buttonAdd.setOnClickListener {
+                viewModel.uploadStory(
+                    token as String,
+                    binding.edAddDescription.text.toString()
+                )
+            }
             btnGallery.setOnClickListener { startGallery() }
             btnCamera.setOnClickListener { startCameraX() }
-        }
-    }
 
-    private fun uploadImage() {
-        if (getFile != null) {
-            val file = reduceFileImage(getFile as File)
+            edAddDescription.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    c: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
 
-            val description =
-                binding.edAddDescription.text.toString().toRequestBody("text/plain".toMediaType())
-            val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-            val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
-                "photo",
-                file.name,
-                requestImageFile
-            )
+                override fun onTextChanged(c: CharSequence?, start: Int, before: Int, count: Int) {
+                    setButtonEnable()
+                }
 
-            viewModel.uploadStory(token as String, imageMultipart, description)
+                override fun afterTextChanged(s: Editable?) {
+                    edAddDescription.error = if (edAddDescription.text.toString()
+                            .isEmpty()
+                    ) getString(R.string.this_field_cannot_be_blank)
+                    else null
+                }
+            })
         }
     }
 
@@ -173,7 +200,17 @@ class AddStoryActivity : AppCompatActivity() {
     }
 
     private fun startCameraX() {
+        val intent = Intent(this, CameraActivity::class.java)
+        launcherIntentCameraX.launch(intent)
+    }
 
+    private fun setButtonEnable() {
+        val storyImage = binding.ivPreviewImage.drawable
+        val description = binding.edAddDescription.text
+
+        binding.buttonAdd.isEnabled =
+            storyImage != null && description != null && description.toString()
+                .isNotEmpty()
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {

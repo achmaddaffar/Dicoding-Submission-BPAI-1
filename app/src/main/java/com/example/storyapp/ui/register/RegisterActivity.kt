@@ -79,7 +79,7 @@ class RegisterActivity : AppCompatActivity() {
                             .setTextColor(
                                 ContextCompat.getColor(
                                     this@RegisterActivity,
-                                    R.color.button_text_color
+                                    R.color.black
                                 )
                             )
                             .show()
