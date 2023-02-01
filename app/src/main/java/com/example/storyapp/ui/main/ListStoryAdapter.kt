@@ -10,6 +10,8 @@ import com.example.storyapp.databinding.StoryItemBinding
 class ListStoryAdapter(private val listStory: List<ListStoryItem>) :
     RecyclerView.Adapter<ListStoryAdapter.ViewHolder>() {
 
+    private lateinit var onItemClickCallback: OnItemClickCallback
+
     class ViewHolder(var binding: StoryItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,9 +28,21 @@ class ListStoryAdapter(private val listStory: List<ListStoryItem>) :
         Glide.with(holder.itemView.rootView)
             .load(listStory[position].photoUrl)
             .into(holder.binding.ivItemPhoto)
+
+        holder.itemView.setOnClickListener {
+            onItemClickCallback.onItemClicked(listStory[position])
+        }
     }
 
     override fun getItemCount(): Int {
         return listStory.size
+    }
+
+    interface OnItemClickCallback {
+        fun onItemClicked(data: ListStoryItem)
+    }
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
     }
 }

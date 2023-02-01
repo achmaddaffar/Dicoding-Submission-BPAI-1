@@ -52,38 +52,24 @@ class RegisterActivity : AppCompatActivity() {
 
             snackBarText.observe(this@RegisterActivity) {
                 it.getContentIfNotHandled()?.let { snackBarText ->
-                    if (snackBarText == getString(R.string.user_created_successfully)) {
-                        AlertDialog.Builder(this@RegisterActivity).apply {
-                            setTitle(getString(R.string.registered))
-                            setMessage(getString(R.string.account_created_successfully))
-                            setPositiveButton(getString(R.string.sign_in)) { _, _ ->
-                                val intent =
-                                    Intent(this@RegisterActivity, LoginActivity::class.java)
-                                startActivity(intent)
-                            }
-                            create()
-                            show()
-                        }
-                    } else {
-                        Snackbar.make(
-                            window.decorView.rootView,
-                            snackBarText,
-                            Snackbar.LENGTH_SHORT
+                    Snackbar.make(
+                        window.decorView.rootView,
+                        snackBarText,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .setBackgroundTint(
+                            ContextCompat.getColor(
+                                this@RegisterActivity,
+                                R.color.red_light
+                            )
                         )
-                            .setBackgroundTint(
-                                ContextCompat.getColor(
-                                    this@RegisterActivity,
-                                    R.color.red_light
-                                )
+                        .setTextColor(
+                            ContextCompat.getColor(
+                                this@RegisterActivity,
+                                R.color.black
                             )
-                            .setTextColor(
-                                ContextCompat.getColor(
-                                    this@RegisterActivity,
-                                    R.color.black
-                                )
-                            )
-                            .show()
-                    }
+                        )
+                        .show()
                 }
             }
 
@@ -93,6 +79,22 @@ class RegisterActivity : AppCompatActivity() {
                 it.getContentIfNotHandled()?.let {
                     playAnimation()
                 }
+            }
+
+            isUserCreated.observe(this@RegisterActivity) {
+                if (it == true)
+                    AlertDialog.Builder(this@RegisterActivity).apply {
+                        setTitle(getString(R.string.registered))
+                        setMessage(getString(R.string.account_created_successfully))
+                        setCancelable(false)
+                        setPositiveButton(getString(R.string.sign_in)) { _, _ ->
+                            val intent =
+                                Intent(this@RegisterActivity, LoginActivity::class.java)
+                            startActivity(intent)
+                        }
+                        create()
+                        show()
+                    }
             }
         }
     }
@@ -123,6 +125,10 @@ class RegisterActivity : AppCompatActivity() {
                 override fun beforeTextChanged(
                     s: CharSequence?, start: Int, count: Int, after: Int
                 ) {
+                    edRegisterName.error = if (edRegisterName.text.toString()
+                            .isEmpty()
+                    ) getString(R.string.this_field_cannot_be_blank)
+                    else null
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -141,6 +147,11 @@ class RegisterActivity : AppCompatActivity() {
                 override fun beforeTextChanged(
                     s: CharSequence?, start: Int, count: Int, after: Int
                 ) {
+                    edRegisterEmail.error = if (edRegisterEmail.text.toString()
+                            .isEmpty()
+                    ) getString(R.string.this_field_cannot_be_blank)
+                    else if (!s.isValidEmail()) getString(R.string.email_is_invalid)
+                    else null
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -160,6 +171,15 @@ class RegisterActivity : AppCompatActivity() {
                 override fun beforeTextChanged(
                     s: CharSequence?, start: Int, count: Int, after: Int
                 ) {
+                    val errorText =
+                        if (!edRegisterPassword.text.toString()
+                                .isValidPassword()
+                        ) getString(R.string.longer_than_8_chars)
+                        else if (edRegisterConfirmPassword.text.toString() != edRegisterPassword.text.toString()) getString(
+                            R.string.password_match
+                        )
+                        else null
+                    edRegisterPassword.setError(errorText, null)
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -171,6 +191,9 @@ class RegisterActivity : AppCompatActivity() {
                         if (!edRegisterPassword.text.toString()
                                 .isValidPassword()
                         ) getString(R.string.longer_than_8_chars)
+                        else if (edRegisterConfirmPassword.text.toString() != edRegisterPassword.text.toString()) getString(
+                            R.string.password_match
+                        )
                         else null
                     edRegisterPassword.setError(errorText, null)
                 }
@@ -180,6 +203,12 @@ class RegisterActivity : AppCompatActivity() {
                 override fun beforeTextChanged(
                     s: CharSequence?, start: Int, count: Int, after: Int
                 ) {
+                    val errorText =
+                        if (edRegisterConfirmPassword.text.toString() != edRegisterPassword.text.toString()) getString(
+                            R.string.password_match
+                        )
+                        else null
+                    edRegisterConfirmPassword.setError(errorText, null)
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {

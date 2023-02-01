@@ -3,6 +3,7 @@ package com.example.storyapp.ui.settings
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +13,7 @@ import com.example.storyapp.databinding.ActivitySettingsBinding
 import com.example.storyapp.ui.login.LoginActivity
 import com.example.storyapp.utils.Helper.Companion.dataStore
 import com.example.storyapp.utils.ViewModelFactory
+import java.util.Locale
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
@@ -64,6 +66,11 @@ class SettingsActivity : AppCompatActivity() {
 
             switchTheme.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.saveThemeSetting(isChecked)
+            }
+
+            btnChangeLanguage.text = Locale.getDefault().language
+            btnChangeLanguage.setOnClickListener {
+                startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
             }
         }
     }

@@ -24,4 +24,9 @@
     <color name="red_light">#F6C9C6</color>
     <color name="button_text_color">#000000</color>
     <color name="fab_color">#388E3C</color>
+    <color name="edt_bg_color">#E0E0E0</color>
+    <color name="light_blue_50">#FFE1F5FE</color>
+    <color name="light_blue_200">#FF81D4FA</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
 </resources>

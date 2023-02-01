@@ -3,6 +3,7 @@ package com.example.storyapp.utils
 import android.app.Application
 import android.content.ContentResolver
 import android.content.Context
+import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
@@ -51,6 +52,17 @@ class Helper {
             ) mediaDir else application.filesDir
 
             return File(outputDirectory, "$timeStamp.jpg")
+        }
+
+        fun bitmapToFile(context: Context, bitmap: Bitmap): File {
+            val wrapper = ContextWrapper(context)
+            var file = wrapper.getDir("Images", Context.MODE_PRIVATE)
+            file = File(file, "$timeStamp.jpg")
+            val stream: OutputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 25, stream)
+            stream.flush()
+            stream.close()
+            return file
         }
 
         fun rotateBitmap(bitmap: Bitmap, isBackCamera: Boolean = false): Bitmap {

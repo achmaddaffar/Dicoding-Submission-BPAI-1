@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +17,7 @@ import com.example.storyapp.data.local.UserPreference
 import com.example.storyapp.data.remote.response.ListStoryItem
 import com.example.storyapp.databinding.ActivityListStoryBinding
 import com.example.storyapp.ui.addStory.AddStoryActivity
+import com.example.storyapp.ui.detailStory.DetailStoryActivity
 import com.example.storyapp.ui.settings.SettingsActivity
 import com.example.storyapp.utils.Helper.Companion.dataStore
 import com.example.storyapp.utils.ViewModelFactory
@@ -55,7 +57,10 @@ class ListStoryActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.action_settings -> {
                 val intent = Intent(this, SettingsActivity::class.java)
-                startActivity(intent)
+                startActivity(
+                    intent,
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
+                )
             }
         }
         return super.onOptionsItemSelected(item)
@@ -107,6 +112,17 @@ class ListStoryActivity : AppCompatActivity() {
 
     private fun setStoryList(listStory: List<ListStoryItem>) {
         val adapter = ListStoryAdapter(listStory)
+        adapter.setOnItemClickCallback(object : ListStoryAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: ListStoryItem) {
+                val intent = Intent(this@ListStoryActivity, DetailStoryActivity::class.java)
+                intent.putExtra(STORY_EXTRA, data)
+                startActivity(
+                    intent,
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(this@ListStoryActivity)
+                        .toBundle()
+                )
+            }
+        })
         binding.rvStoryList.adapter = adapter
     }
 
@@ -124,12 +140,20 @@ class ListStoryActivity : AppCompatActivity() {
 
             fabPost.setOnClickListener {
                 val intent = Intent(this@ListStoryActivity, AddStoryActivity::class.java)
-                startActivity(intent)
+                startActivity(
+                    intent,
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(this@ListStoryActivity)
+                        .toBundle()
+                )
             }
         }
     }
 
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) dialog.show() else dialog.cancel()
+    }
+
+    companion object {
+        const val STORY_EXTRA = "story"
     }
 }

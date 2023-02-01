@@ -26,8 +26,12 @@ class RegisterViewModel(private val pref: UserPreference, private val applicatio
     private val mIsAnimate = MutableLiveData<Event<Boolean>>()
     val isAnimate: LiveData<Event<Boolean>> = mIsAnimate
 
+    private val mIsUserCreated = MutableLiveData<Boolean>()
+    val isUserCreated: LiveData<Boolean> = mIsUserCreated
+
     init {
         mIsAnimate.value = Event(false)
+        mIsUserCreated.value = false
     }
 
     fun registerUser(name: String, email: String, password: String) {
@@ -43,10 +47,11 @@ class RegisterViewModel(private val pref: UserPreference, private val applicatio
                     val responseBody = response.body()
                     if (responseBody != null) {
                         val isError = responseBody.error as Boolean
-                        if (isError) {
+                        if (isError)
                             mSnackBarText.value =
                                 Event(application.getString(R.string.email_is_already_taken))
-                        }
+                        else
+                            mIsUserCreated.value = true
                     }
                 } else {
                     mSnackBarText.value =

@@ -64,6 +64,7 @@
             android:id="@+id/til_description"
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:background="@color/edt_bg_color"
             android:layout_marginTop="54dp"
             app:layout_constraintBottom_toTopOf="@id/button_add"
             app:layout_constraintEnd_toEndOf="parent"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Story App</string>
-    <string name="app_logo">App Logo</string>
+    <string name="app_name" translatable="false">Story App</string>
+    <string name="app_logo" translatable="false">App Logo</string>
     <string name="welcome_back">Welcome\nBack</string>
     <string name="sign_up_and_share_your_story">Sign up and share your story</string>
     <string name="email">Email Address</string>
@@ -18,7 +18,7 @@
     <string name="email_is_invalid">Email is invalid</string>
     <string name="login_invalid_error">The email address or password that you\'ve entered doesn\'t match any account.</string>
     <string name="register">Register</string>
-    <string name="story_image_desc">Story Image</string>
+    <string name="story_image">Story Image</string>
     <string name="please_wait">Please Wait...</string>
     <string name="email_is_already_taken">Email is already taken</string>
     <string name="user_created_successfully">User Created Successfully</string>
@@ -46,4 +46,6 @@
     <string name="switch_camera_button">Switch Camera Button</string>
     <string name="failed_to_start_camera">Failed to start camera</string>
     <string name="failed_to_take_photo">Failed to take photo</string>
+    <string name="description">Description</string>
+    <string name="change_language">Change language</string>
 </resources>
