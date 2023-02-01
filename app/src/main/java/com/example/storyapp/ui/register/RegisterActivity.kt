@@ -88,9 +88,7 @@ class RegisterActivity : AppCompatActivity() {
                         setMessage(getString(R.string.account_created_successfully))
                         setCancelable(false)
                         setPositiveButton(getString(R.string.sign_in)) { _, _ ->
-                            val intent =
-                                Intent(this@RegisterActivity, LoginActivity::class.java)
-                            startActivity(intent)
+                            finish()
                         }
                         create()
                         show()
@@ -236,7 +234,6 @@ class RegisterActivity : AppCompatActivity() {
 
             tvLogin.setOnClickListener {
                 val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
             }
         }

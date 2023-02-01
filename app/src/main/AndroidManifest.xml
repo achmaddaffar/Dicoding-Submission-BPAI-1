@@ -47,14 +47,24 @@
             android:parentActivityName=".ui.main.ListStoryActivity" />
         <activity
             android:name=".ui.main.ListStoryActivity"
-            android:exported="false">
+            android:exported="false"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".ui.register.RegisterActivity"
-            android:exported="false">
+            android:exported="false"
+            android:launchMode="singleTask">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:exported="false"
+            android:launchMode="singleTask">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -68,13 +78,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".ui.login.LoginActivity"
-            android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

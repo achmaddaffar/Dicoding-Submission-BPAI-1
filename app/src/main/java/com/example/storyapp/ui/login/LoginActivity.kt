@@ -183,7 +183,6 @@ class LoginActivity : AppCompatActivity() {
 
             tvRegister.setOnClickListener {
                 val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
             }
         }
