@@ -27,7 +27,6 @@ import com.example.storyapp.utils.ViewModelFactory
 class SplashScreenActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashScreenBinding
     private lateinit var viewModel: SplashScreenViewModel
-    private lateinit var user: UserModel
     private var isLogin = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +61,6 @@ class SplashScreenActivity : AppCompatActivity() {
 
         viewModel.apply {
             getUser().observe(this@SplashScreenActivity) { user ->
-                this@SplashScreenActivity.user = user
                 this@SplashScreenActivity.isLogin = user.token.isNotEmpty()
             }
 

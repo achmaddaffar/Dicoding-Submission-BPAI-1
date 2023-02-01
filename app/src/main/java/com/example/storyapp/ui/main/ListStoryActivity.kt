@@ -22,6 +22,7 @@ import com.example.storyapp.ui.settings.SettingsActivity
 import com.example.storyapp.utils.Helper.Companion.dataStore
 import com.example.storyapp.utils.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import kotlin.system.exitProcess
 
 class ListStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityListStoryBinding
@@ -43,6 +44,7 @@ class ListStoryActivity : AppCompatActivity() {
             setMessage(getString(R.string.are_you_sure))
             setPositiveButton(getString(R.string.yes)) { _, _ ->
                 finish()
+                exitProcess(0)
             }
             setNegativeButton(getString(R.string.no), null)
         }.show()
